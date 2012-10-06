@@ -73,6 +73,8 @@ def find_view(request):
   fromTime = int( request.REQUEST.get('from', -1) )
   untilTime = int( request.REQUEST.get('until', -1) )
 
+  jsonp = request.REQUEST.get('jsonp')
+
   if fromTime == -1:
     fromTime = None
   if untilTime == -1:
@@ -140,6 +142,10 @@ def find_view(request):
 
   response['Pragma'] = 'no-cache'
   response['Cache-Control'] = 'no-cache'
+
+  if jsonp:
+    response.content = "%s(%s)" % (jsonp, response.content)
+
   return response
 
 
